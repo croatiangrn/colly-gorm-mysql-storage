@@ -54,6 +54,9 @@ func (s *Storage) IsVisited(requestID uint64) (bool, error) {
 
 	query := fmt.Sprintf(`SELECT EXISTS(SELECT request_id FROM %s WHERE request_id = ?)`, s.VisitedTable)
 	err := s.db.Raw(query, strconv.FormatUint(requestID, 10)).Row().Scan(&isVisited)
+	if err != nil {
+		log.Println(err)
+	}
 
 	return isVisited, err
 }
