@@ -1,6 +1,8 @@
 package gorm_storage
 
 import (
+	"database/sql"
+	"errors"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	"log"
@@ -62,7 +64,7 @@ func (s *Storage) Cookies(u *url.URL) string {
 
 	query := fmt.Sprintf(`SELECT cookies FROM %s WHERE host = ?;`, s.CookiesTable)
 
-	if err := s.db.Raw(query, u.Host).Row().Scan(&cookies); err != nil {
+	if err := s.db.Raw(query, u.Host).Row().Scan(&cookies); err != nil && !errors.Is(err, sql.ErrNoRows) {
 		log.Fatal(err)
 	}
 
