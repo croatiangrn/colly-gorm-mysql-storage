@@ -31,10 +31,12 @@ func (s *Storage) Init() error {
 		log.Fatal(err)
 	}
 
-	query = fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s (host text not null, cookies text not null);", s.CookiesTable)
+	if len(s.CookiesTable) > 0 {
+		query = fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s (host text not null, cookies text not null);", s.CookiesTable)
 
-	if err = s.db.Exec(query).Error; err != nil {
-		log.Fatal(err)
+		if err = s.db.Exec(query).Error; err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	return nil
