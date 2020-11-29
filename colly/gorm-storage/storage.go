@@ -27,7 +27,7 @@ func NewStorage(visitedTable string, cookiesTable string, db *gorm.DB) *Storage 
 func (s *Storage) Init() error {
 	var err error
 
-	query := fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s (request_id text not null);", s.VisitedTable)
+	query := fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s (request_id text not null, timestamp datetime not null);", s.VisitedTable)
 
 	if err = s.db.Exec(query).Error; err != nil {
 		log.Fatal(err)
