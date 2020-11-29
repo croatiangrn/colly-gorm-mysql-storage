@@ -80,3 +80,19 @@ func (s *Storage) SetCookies(u *url.URL, cookies string) {
 
 	s.db.Exec(query, u.Host, cookies)
 }
+
+// Clear clears storage
+func (s *Storage) Clear() error {
+	visitedQuery := fmt.Sprintf(`DELETE FROM %s WHERE 1=1`, s.VisitedTable)
+	cookiesQuery := fmt.Sprintf(`DELETE FROM %s WHERE 1=1`, s.CookiesTable)
+
+	if err := s.db.Exec(visitedQuery).Error; err != nil {
+		return err
+	}
+
+	if err := s.db.Exec(cookiesQuery).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
