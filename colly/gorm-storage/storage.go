@@ -15,8 +15,8 @@ type Storage struct {
 	db           *gorm.DB
 }
 
-func NewStorage(db *gorm.DB) *Storage {
-	return &Storage{db: db}
+func NewStorage(visitedTable string, cookiesTable string, db *gorm.DB) *Storage {
+	return &Storage{VisitedTable: visitedTable, CookiesTable: cookiesTable, db: db}
 }
 
 // Init initializes the PostgreSQL storage
