@@ -10,24 +10,18 @@ import (
 
 // Storage implements a PostgreSQL storage backend for colly
 type Storage struct {
-	DBArgs       string
 	VisitedTable string
 	CookiesTable string
 	db           *gorm.DB
 }
 
+func NewStorage(db *gorm.DB) *Storage {
+	return &Storage{db: db}
+}
+
 // Init initializes the PostgreSQL storage
 func (s *Storage) Init() error {
 	var err error
-
-	if s.db, err = gorm.Open("mysql", s.DBArgs); err != nil {
-		log.Fatal(err)
-
-	}
-
-	if err = s.db.DB().Ping(); err != nil {
-		log.Fatal(err)
-	}
 
 	query := fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s (request_id text not null);", s.VisitedTable)
 
