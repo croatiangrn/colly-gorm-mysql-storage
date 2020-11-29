@@ -1,11 +1,16 @@
 package gorm_storage
 
 import (
+	"errors"
 	"fmt"
+	rndCommon "github.com/croatiangrn/go-rnd-common"
 	"github.com/jinzhu/gorm"
-	"log"
 	"net/url"
 	"strconv"
+)
+
+var (
+	ErrDBError = errors.New("db_err")
 )
 
 // Storage implements a PostgreSQL storage backend for colly
@@ -26,13 +31,15 @@ func (s *Storage) Init() error {
 	query := fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s (request_id text not null);", s.VisitedTable)
 
 	if err = s.db.Exec(query).Error; err != nil {
-		log.Fatal(err)
+		rndCommon.LogError(err)
+		return ErrDBError
 	}
 
 	query = fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s (host text not null, cookies text not null);", s.CookiesTable)
 
 	if err = s.db.Exec(query).Error; err != nil {
-		log.Fatal(err)
+		rndCommon.LogError(err)
+		return ErrDBError
 	}
 
 	return nil
