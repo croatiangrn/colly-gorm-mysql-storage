@@ -1,4 +1,4 @@
-module github.com/croatiangrn/colly-gorm-storage
+module github.com/croatiangrn/colly-gorm-mysql-storage
 
 go 1.15
 
