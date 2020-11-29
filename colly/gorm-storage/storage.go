@@ -18,7 +18,9 @@ type Storage struct {
 }
 
 func NewStorage(visitedTable string, cookiesTable string, db *gorm.DB) *Storage {
-	return &Storage{VisitedTable: visitedTable, CookiesTable: cookiesTable, db: db}
+	storage := &Storage{VisitedTable: visitedTable, CookiesTable: cookiesTable, db: db}
+	_ = storage.Init()
+	return storage
 }
 
 // Init initializes the PostgreSQL storage
